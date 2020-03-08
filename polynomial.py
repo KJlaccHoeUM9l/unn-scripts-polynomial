@@ -5,23 +5,23 @@ from functools import reduce
 class Polynomial:
     def __init__(self, other):
         if isinstance(other, (list, tuple)):
-            self.coefficients = np.array(other)
+            self.coeffs = np.array(other)
         elif isinstance(other, np.ndarray):
-            self.coefficients = other
+            self.coeffs = other
         elif isinstance(other, Polynomial):
-            self.coefficients = other.coefficients
+            self.coeffs = other.coeffs
         else:
             raise TypeError('Incorrect argument type. Expected: list, tuple, numpy.ndarray')
-        self.coefficients = delete_first_zeros(self.coefficients)
+        self.coeffs = delete_first_zeros(self.coeffs)
 
     def __add__(self, other):
         if isinstance(other, Polynomial):
-            max_len = max(len(self.coefficients), len(other.coefficients))
-            return Polynomial(padding_by_zeros(self.coefficients, max_len) + padding_by_zeros(other.coefficients,
-                                                                                              max_len))
+            max_len = max(len(self.coeffs), len(other.coeffs))
+            return Polynomial(padding_by_zeros(self.coeffs, max_len) + padding_by_zeros(other.coeffs,
+                                                                                        max_len))
         elif isinstance(other, int):
-            p = Polynomial(self.coefficients)
-            p.coefficients[-1] += other
+            p = Polynomial(self.coeffs)
+            p.coeffs[-1] += other
             return p
         else:
             raise TypeError('Incorrect argument type. Expected: int, Polynomial')
@@ -40,11 +40,11 @@ class Polynomial:
 
     def __mul__(self, other):
         if isinstance(other, int):
-            return Polynomial(self.coefficients * other)
+            return Polynomial(self.coeffs * other)
         elif isinstance(other, Polynomial):
-            self_len = len(self.coefficients)
+            self_len = len(self.coeffs)
             return reduce(lambda p1, p2: p1 + p2,
-                          map(lambda i: Polynomial(np.concatenate(((other * int(self.coefficients[i])).coefficients,
+                          map(lambda i: Polynomial(np.concatenate(((other * int(self.coeffs[i])).coeffs,
                                                                    np.zeros(self_len - i - 1))
                                                                   )
                                                    ),
@@ -59,17 +59,17 @@ class Polynomial:
 
     def __eq__(self, other):
         if isinstance(other, Polynomial):
-            if len(self.coefficients) != len(other.coefficients):
+            if len(self.coeffs) != len(other.coeffs):
                 return False
             else:
-                return (self.coefficients == other.coefficients).all()
+                return (self.coeffs == other.coeffs).all()
         else:
             raise TypeError('Incorrect argument type. Expected: Polynomial')
 
     def __str__(self):
-        self_len = len(self.coefficients)
+        self_len = len(self.coeffs)
         if self_len == 1:
-            return str(self.coefficients[0])
+            return str(self.coeffs[0])
         else:
             def get_coefficient(coefficient):
                 return str(abs(coefficient)) if coefficient != 1 else ''
@@ -78,14 +78,14 @@ class Polynomial:
                 return '^{}'.format(degree) if degree != 1 else ''
 
             def get_sign(index):
-                return '+' if self.coefficients[index] > 0 else '-'
+                return '+' if self.coeffs[index] > 0 else '-'
 
-            result = '{}{}x{}'.format('-' if self.coefficients[0] < 0 else '',
-                                      '' if abs(self.coefficients[0]) == 1 else str(abs(self.coefficients[0])),
+            result = '{}{}x{}'.format('-' if self.coeffs[0] < 0 else '',
+                                      '' if abs(self.coeffs[0]) == 1 else str(abs(self.coeffs[0])),
                                       get_degree(self_len - 1))
 
             for i in np.arange(1, self_len - 1):
-                current_coefficient = self.coefficients[i]
+                current_coefficient = self.coeffs[i]
                 current_degree = self_len - i - 1
 
                 if current_coefficient != 0:
@@ -93,11 +93,11 @@ class Polynomial:
                                                  get_coefficient(current_coefficient),
                                                  get_degree(current_degree))
 
-            return result if self.coefficients[-1] == 0 \
-                else result + ' {} {}'.format(get_sign(-1), abs(self.coefficients[-1]))
+            return result if self.coeffs[-1] == 0 \
+                else result + ' {} {}'.format(get_sign(-1), abs(self.coeffs[-1]))
 
     def __repr__(self):
-        return 'Polynomial({})'.format(repr(self.coefficients.tolist()))
+        return 'Polynomial({})'.format(repr(self.coeffs.tolist()))
 
 
 def delete_first_zeros(list_):
