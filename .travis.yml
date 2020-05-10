@@ -2,4 +2,5 @@ language: python
 python:
   - "3.6"
 script:
-  - python3 ./pure_python/unit_test.py
+  - ls
+  - python3 ./pure_python/unit_tests.py
