@@ -2,24 +2,28 @@ language: python
 python:
   - "3.6"
 install:
+  # For check PEP 8
   - pip install flake8
-#  - apt-get install pylint
 before_script:
+  # Check PEP 8
+  # Ignore line length (just for example)
   - flake8 ./ --ignore E501
 script:
-  - ls
+  # Test of cloning other repos
+  # Work with directory
   - mkdir test_for_other_tests
-  - ls
   - cd test_for_other_tests
   - git clone https://github.com/KJlaccHoeUM9l/scripts-investor-task.git
-  - ls
   - cd scripts-investor-task
   - git checkout for_travis_test
   - python3 main.py -a opt -i test_files/random_data_small.txt -o ./
+
+  # "Hidden" test on "other" test file
   - cd ..
   - cp ../pure_python/polynomial.py ./
   - cp ../pure_python/unit_tests.py ./
   - python3 ./unit_tests.py
   - cd ..
-  - ls
+
+  # Run main script
   - python3 ./pure_python/unit_tests.py
