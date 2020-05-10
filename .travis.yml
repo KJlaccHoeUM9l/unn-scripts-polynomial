@@ -9,6 +9,7 @@ script:
   - git clone https://github.com/KJlaccHoeUM9l/scripts-investor-task.git
   - ls
   - cd scripts-investor-task
+  - git checkout for_travis_test
   - python3 main.py -a opt -i test_files/random_data_small.txt -o ./
   - cd ..
   - cp ../pure_python/polynomial.py ./
