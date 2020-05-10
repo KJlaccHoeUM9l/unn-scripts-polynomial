@@ -1,6 +1,9 @@
 import unittest
 
-from pure_python.polynomial import Polynomial, delete_first_zeros
+try:
+    from pure_python.polynomial import Polynomial, delete_first_zeros
+except ModuleNotFoundError:
+    from polynomial import Polynomial, delete_first_zeros
 
 
 class UnitTests(unittest.TestCase):
