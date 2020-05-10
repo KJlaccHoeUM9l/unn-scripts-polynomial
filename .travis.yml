@@ -1,4 +1,5 @@
 language: python
 python:
   - "3.6"
-script: ./pure_python/unit_test.py
+script:
+  - python3 pure_python/unit_test.py
