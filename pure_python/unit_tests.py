@@ -152,4 +152,4 @@ class UnitTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    UnitTests.run()
+    unittest.main()
