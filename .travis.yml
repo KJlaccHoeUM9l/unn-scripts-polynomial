@@ -3,4 +3,17 @@ python:
   - "3.6"
 script:
   - ls
+  - mkdir test_for_other_tests
+  - ls
+  - cd test_for_other_tests
+  - git clone https://github.com/KJlaccHoeUM9l/scripts-investor-task.git
+  - ls
+  - cd scripts-investor-task
+  - python3 main.py -a opt -i test_files/random_data_small.txt -o ./
+  - cd ..
+  - cp ../pure_python/polynomial.py ./
+  - cp ../pure_python/unit_tests.py ./
+  - python3 ./unit_tests.py
+  - cd ..
+  - ls
   - python3 ./pure_python/unit_tests.py
